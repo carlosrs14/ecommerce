@@ -16,7 +16,7 @@ public class ExampleController {
 
     @GetMapping("")
     public String hostName() {
-        String serviceUrl = "http://EUREKA-CLIENT:8000/api/v1/hostname";
+        String serviceUrl = "http://product-service:8000/api/v1/hostname";
         return restTemplate.getForObject(serviceUrl, String.class);
     }
 }

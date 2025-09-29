@@ -11,10 +11,10 @@ eureka:
 
 spring:
   datasource:
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/productDB
+    password: ${PASSWORD_DB}
+    url: ${URL_DB}
+    username: ${USER_DB}
     driver-class-name: org.postgresql.Driver
-    username: postgres
 
   jpa:
     hibernate:
