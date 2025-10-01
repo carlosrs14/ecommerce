@@ -10,5 +10,18 @@ eureka:
     lease-expiration-duration-in-seconds: 90
 
 spring:
+  datasource:
+    password: ${PASSWORD_DB}
+    url: ${URL_DB}
+    username: ${USER_DB}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   application:
     name: product-service

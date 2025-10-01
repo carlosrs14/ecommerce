@@ -6,5 +6,5 @@ RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21-alpine
 VOLUME /tmp
-COPY --from=build /app/target/*.jar eureka-client.jar
-ENTRYPOINT [ "java", "-jar", "/eureka-client.jar" ]
+COPY --from=build /app/target/*.jar product-service.jar
+ENTRYPOINT [ "java", "-jar", "/product-service.jar" ]

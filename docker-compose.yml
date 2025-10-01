@@ -19,6 +19,9 @@ services:
     ports:
       - "8000"
     environment:
+      URL_DB: jdbc:postgresql://products-db:5432/${NAME_DB}
+      USER_DB: ${USER_DB}
+      PASSWORD_DB: ${PASSWORD_DB}
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka/
     networks:
       - eureka-network
@@ -26,19 +29,10 @@ services:
       replicas: 3
     depends_on:
       - eureka-server
+      - products-db
+    env_file:
+      - .env
 
-
-  service-discovery:
-    build:
-      context: ./service-discovery
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    networks:
-      - eureka-network
-    depends_on:
-      - eureka-server
-  
 
   microservice-client-new:
     build:
@@ -62,6 +56,21 @@ services:
       - eureka-network
     depends_on:
       - eureka-server
+    
+  products-db:
+    container_name: products-db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${USER_DB}
+      POSTGRES_PASSWORD: ${PASSWORD_DB}
+      POSTGRES_DB: ${NAME_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - eureka-network
+
+volumes:
+  postgres_data:
 
 
 networks:
