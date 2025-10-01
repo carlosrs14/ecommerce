@@ -44,7 +44,6 @@ public class ExampleController {
         
     }
     
-
     @PostMapping("/products")
     public ResponseEntity<ProductResponseDTO> create(@RequestBody ProductRequestDTO product) {
         String urlFinal = serviceUrl + "/products";
@@ -59,10 +58,10 @@ public class ExampleController {
     }
 
     @PatchMapping("/products/{id}")
-    public ResponseEntity<?> patch(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
+    public ResponseEntity<ProductResponseDTO> patch(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
         String urlFinal = serviceUrl + "/products/" + id;
-        restTemplate.patchForObject(urlFinal, product, ProductResponseDTO.class);
-        return ResponseEntity.noContent().build();
+        ProductResponseDTO resp = restTemplate.patchForObject(urlFinal, product, ProductResponseDTO.class);
+        return ResponseEntity.ok(resp);
     }
 
     @DeleteMapping("/products/{id}")
