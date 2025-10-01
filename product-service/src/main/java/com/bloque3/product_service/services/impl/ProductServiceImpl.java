@@ -3,6 +3,7 @@ package com.bloque3.product_service.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.bloque3.product_service.dtos.request.ProductRequestDTO;
@@ -19,15 +20,20 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRespository productRespository;
 
-    public ProductServiceImpl(ProductMapper productMapper, ProductRespository productRespository) {
+    private final Environment env;
+
+    public ProductServiceImpl(ProductMapper productMapper, ProductRespository productRespository, Environment env) {
         this.productMapper = productMapper;
         this.productRespository = productRespository;
+        this.env = env;
     }
 
     @Override
     public ProductResponseDTO findById(Long id) {
         Product product = productRespository.findById(id).orElseThrow();
-        return productMapper.toDto(product);
+        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
+        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
+        return productResponseDTO;
     }
 
     @Override
@@ -40,7 +46,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDTO save(ProductRequestDTO productRequestDTO) {
         Product product = productMapper.toEntity(productRequestDTO);
         product = productRespository.save(product);
-        return productMapper.toDto(product);
+        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
+        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
+        return productResponseDTO;
     }
 
     @Override
@@ -51,7 +59,10 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productRequestDTO.getPrice());
         product.setStock(productRequestDTO.getStock());
         product = productRespository.save(product);
-        return productMapper.toDto(product);
+
+        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
+        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
+        return productResponseDTO;
     }
 
     @Override
@@ -61,7 +72,9 @@ public class ProductServiceImpl implements ProductService {
             product.setName(productRequestDTO.getName());
         }
         product = productRespository.save(product);
-        return productMapper.toDto(product);
+        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
+        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
+        return productResponseDTO;
     }
 
     @Override
