@@ -1,0 +1,2122 @@
+{
+	"info": {
+		"_postman_id": "505fa96b-bcab-464d-8c14-0b0a38a21393",
+		"name": "spring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18133801"
+	},
+	"item": [
+		{
+			"name": "security",
+			"item": [
+				{
+					"name": "basic",
+					"item": [
+						{
+							"name": "auth",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "carlos02",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "carlos",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/index",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"index"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "jwt",
+					"item": [
+						{
+							"name": "user",
+							"item": [
+								{
+									"name": "hello",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/hello",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"hello"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "helloSecured",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYXJsb3MiLCJpYXQiOjE3NTYwNjY5MjAsImV4cCI6MTc1NjE1MzMyMH0.AB6oBWZER1_7hiWI5gfyjBihDValeSV9Kdh0Q4MqNGQ",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/helloSecured",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"helloSecured"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findAll",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "carlos02",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "carlos",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/users",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"guess\",\r\n    \"email\": \"g@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"roles\": [\"GUESS\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/auth/register",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"auth",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"carlos\",\r\n    \"password\": \"carlos02\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/login",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"carlos\",\r\n    \"email\": \"c@gmail.com\",\r\n    \"password\": \"carlos02\",\r\n    \"roles\": [\"USER\"]\r\n}"
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/auth/1",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"auth",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "roles",
+							"item": [
+								{
+									"name": "admin",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJndWVzcyIsImlhdCI6MTc1NjA2ODMwNiwiZXhwIjoxNzU2MTU0NzA2fQ.MXJdYTJpKrTBMr8KDZmchrOFuR-1JybiTREFspuZ2lM",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/accessAdmin",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"accessAdmin"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "user",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJndWVzcyIsImlhdCI6MTc1NjA2ODMwNiwiZXhwIjoxNzU2MTU0NzA2fQ.MXJdYTJpKrTBMr8KDZmchrOFuR-1JybiTREFspuZ2lM",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/accessUser",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"accessUser"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "guess",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYXJsb3MiLCJpYXQiOjE3NTYwNjg0ODIsImV4cCI6MTc1NjE1NDg4Mn0.Xekh-dd9ZonabmyNv35QoOpS54TZwFmo_M2-WJh0ao8",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{URL}}/{{PATH}}/accessGuess",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"{{PATH}}",
+												"accessGuess"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "oauth",
+					"item": []
+				},
+				{
+					"name": "carlos d",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlosr@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/auth/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "juan e",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/auth/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "admin request",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9VU0VSIn1dLCJzdWIiOiJjYXJsb3NAZ21haWwuY29tIiwiaWF0IjoxNzU3MTA3ODU5LCJleHAiOjE3NTcxMDk2NTl9.6NnmQJzD_K5y7uz-YOStQ7OHYWRphAqVP_KwxKIq3xk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/auth/adminhello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"adminhello"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "microservices students",
+			"item": [
+				{
+					"name": "courses",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/courses/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"courses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "estudiantes por curso",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/courses/search-students/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"courses",
+										"search-students",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "students",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/students",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"students"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/students/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"students",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "monolitho soccer",
+			"item": [
+				{
+					"name": "players",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/players",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"players"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/players/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"players",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Leofdsfsd\",\r\n    \"lastName\": \"Messi\",\r\n    \"nacionality\": \"Argu\",\r\n    \"age\": 39,\r\n    \"position\": \"Forward\",\r\n    \"clubId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/players",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"players"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Leo\",\r\n    \"lastName\": \"Messi\",\r\n    \"nacionality\": \"Argentino\",\r\n    \"age\": 39,\r\n    \"position\": \"Forward\",\r\n    \"clubId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/players/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"players",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/players/3",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"players",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "clubs",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Barcelona FC\",\r\n    \"coachId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/clubs",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"clubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/clubs",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"clubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/clubs/6",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"clubs",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Man City\",\r\n    \"coachId\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/clubs/6",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"clubs",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/clubs/7",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"clubs",
+										"7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "coach",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Pep\",\r\n    \"lastName\": \"Gordiola\",\r\n    \"age\": 56,\r\n    \"nacionality\": \"Español\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/coachs",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"coachs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/coachs",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"coachs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "carlos02",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "carlos",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/coachs/2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"coachs",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"carlos\",\r\n    \"lastName\": \"rincones\",\r\n    \"age\": 45,\r\n    \"nacionality\": \"colombia\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/coachs/2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"coachs",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/coachs/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"coachs",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "competitions",
+					"item": [
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/competitions/2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"competitions",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Leo\",\r\n    \"lastName\": \"Messi\",\r\n    \"nacionality\": \"Argentino\",\r\n    \"age\": 39,\r\n    \"position\": \"Forward\",\r\n    \"clubId\": 3\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/competitions",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"competitions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Bundesleague\",\r\n    \"price\": 90000,\r\n    \"startDate\": \"2025-04-04\",\r\n    \"endDate\": \"2025-04-04\",\r\n    \"clubsIds\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/competitions",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"competitions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"La Liga\",\r\n    \"price\": 90000,\r\n    \"startDate\": \"2025-04-04\",\r\n    \"endDate\": \"2025-04-04\",\r\n    \"clubsIds\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/competitions/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"competitions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/competitions/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"competitions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "monolitho films",
+			"item": [
+				{
+					"name": "author",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"carlos2\",\r\n    \"email\": \"carlos@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8080/api/authors",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"authors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/authors",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"authors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/authors/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"authors",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/authors/2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"authors",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Carlos R\",\r\n    \"email\": \"cgmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/authors/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"authors",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "category",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/categories",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/categories/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"crimen\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/categories",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "film",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/films/2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/films",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"films"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"pelicula\",\r\n    \"description\": \"una pelicula\",\r\n    \"authorId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/films",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"films"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/films/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IT\",\r\n    \"description\": \"nueva\",\r\n    \"authorId\": 52\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/films/4",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "reservas",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "New Request",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYXJsb3MiLCJpYXQiOjE3NTYwNjg0ODIsImV4cCI6MTc1NjE1NDg4Mn0.Xekh-dd9ZonabmyNv35QoOpS54TZwFmo_M2-WJh0ao8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/user",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "clientes",
+					"item": [
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "habitaciones",
+					"item": []
+				},
+				{
+					"name": "reservas",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "my songs",
+			"item": [
+				{
+					"name": "crete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJlbGNob3Jyb0BnbWFpbC5jb20iLCJ1c2VyVHlwZSI6ImNvbGxhYm9yYXRvciIsImNvbGxhYm9yYXRvckRldGFpbHMiOlt7ImJ1c2luZXNzSWQiOjIsInJvbGUiOiJPd25lciJ9XSwiaWF0IjoxNzU2NzgyNTAwLCJleHAiOjE3NTY3ODYxMDB9.Ejp8lY5yAzYz2KYapSHWZ08lfNw9Px0AYQTGMWZqaTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJkYW5pZWxAZ21haWwuY29tIiwidXNlclR5cGUiOiJjbGllbnQiLCJpYXQiOjE3NTI0ODU1NjIsImV4cCI6MTc1MzA5MDM2Mn0.c8o9SMoOi8evYp3FslOdOnh9A4myj-f1qUne7lgG7yY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Bohemian Rhapsody\",\r\n  \"duration\": 5.55,\r\n  \"releaseDate\": \"1975-10-31\",\r\n  \"authorId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/songs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"songs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/songs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"songs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/songs/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"songs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "microservices with spring 3",
+			"item": [
+				{
+					"name": "products",
+					"item": [
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"carlos@gmail.com\",\r\n    \"password\": \"1234\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"\",\r\n    \"price\": 500000,\r\n    \"description\": \"mouse para jugar lol\",\r\n    \"stock\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patch",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"nuevo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/{{PATH}}/products/1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "new version",
+					"item": [
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products/1",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Camara\",\r\n    \"price\": 350000,\r\n    \"description\": \"Cámara de nolan\",\r\n    \"stock\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"mouse gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"mouse para jugar lol\",\r\n    \"stock\": 14\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products/1",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patch",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"asfdasdfas gawegqwes\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products/1",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLNEWVERSION}}/{{PATH}}/new-version/products/1",
+									"host": [
+										"{{URLNEWVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"new-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "old version",
+					"item": [
+						{
+							"name": "hostname",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products/4",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"mouse pad\",\r\n    \"price\": 60000,\r\n    \"description\": \"para el mouse\",\r\n    \"stock\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products/1",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "patch",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammerrr\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products/1",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"teclado gammer\",\r\n    \"price\": 50000,\r\n    \"description\": \"teclado para jugar lol\",\r\n    \"stock\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{URLOLDVERSION}}/{{PATH}}/old-version/products/1",
+									"host": [
+										"{{URLOLDVERSION}}"
+									],
+									"path": [
+										"{{PATH}}",
+										"old-version",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
