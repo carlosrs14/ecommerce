@@ -4,6 +4,7 @@ import com.bloque3.microservice_client_old.dtos.request.ProductRequestDTO;
 import com.bloque3.microservice_client_old.dtos.response.ProductResponseDTO;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/v1/old-version")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ExampleController {
     private final RestTemplate restTemplate;
     final String serviceUrl = "http://product-service:8000/api/v1";
