@@ -78,6 +78,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDTO archive(Long id) {
+        Product product = productRespository.findById(id).orElseThrow();
+        product.setActive(!product.getActive());
+        product = productRespository.save(product);
+        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
+        return productResponseDTO;
+    }
+
+    @Override
     public void delete(Long id) {
         if (productRespository.existsById(id)) {
             productRespository.deleteById(id);

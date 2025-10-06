@@ -55,6 +55,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.patch(id, productRequestDTO));
     }
 
+    @PostMapping("/{id}/archive")
+    public ResponseEntity<ProductResponseDTO> archive(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.archive(id));
+    }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);

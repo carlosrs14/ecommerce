@@ -66,6 +66,12 @@ public class ExampleController {
         return ResponseEntity.ok(resp);
     }
 
+    @PostMapping("/products/{id}/archive")
+    public ResponseEntity<?> archive(@PathVariable Long id) {
+        String urlFinal = serviceUrl + "/products/" + id + "/archive";
+        return restTemplate.postForEntity(urlFinal, null, ProductResponseDTO.class);
+    }
+
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         String urlFinal = serviceUrl + "/products/" + id;
