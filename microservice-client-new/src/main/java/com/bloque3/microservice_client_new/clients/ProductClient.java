@@ -35,6 +35,9 @@ public interface ProductClient {
     @PatchMapping("/products/{id}")
     ProductResponseDTO patch(@PathVariable Long id, @RequestBody ProductRequestDTO product);
 
+    @PostMapping("/products/{id}/archive")
+    ProductResponseDTO archive(@PathVariable Long id);
+
     @DeleteMapping("/products/{id}")
     void delete(@PathVariable Long id);
 }

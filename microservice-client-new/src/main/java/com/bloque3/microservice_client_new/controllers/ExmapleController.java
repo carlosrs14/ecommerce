@@ -56,13 +56,15 @@ public class ExmapleController {
         return ResponseEntity.ok(productClient.patch(id, product));
     }
 
+    @PostMapping("/products/{id}/archive")
+    public ResponseEntity<?> archive(@PathVariable Long id) {
+        return ResponseEntity.ok(productClient.archive(id));
+    }
+
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         productClient.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
-    
-    
 
 }

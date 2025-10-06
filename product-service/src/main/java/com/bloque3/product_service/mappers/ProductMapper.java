@@ -13,5 +13,6 @@ public interface ProductMapper {
     ProductResponseDTO toDto(Product product);
     
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "active", ignore = true)
     Product toEntity(ProductRequestDTO productRequestDTO);
 }
