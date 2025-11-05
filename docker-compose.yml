@@ -33,30 +33,6 @@ services:
     env_file:
       - .env
 
-
-  microservice-client-new:
-    build:
-      context: ./microservice-client-new
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8082"
-    networks:
-      - eureka-network
-    depends_on:
-      - eureka-server
-
-  
-  microservice-client-old:
-    build:
-      context: ./microservice-client-old
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8083"
-    networks:
-      - eureka-network
-    depends_on:
-      - eureka-server
-    
   products-db:
     container_name: products-db
     image: postgres:15-alpine
