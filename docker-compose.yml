@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: eureka-server
     ports:
-      - "8761:8761"
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
     networks:
       - eureka-network
 
@@ -17,38 +17,98 @@ services:
       context: ./product-service
       dockerfile: Dockerfile
     ports:
-      - "8000"
+      - "8000:8000"
     environment:
-      URL_DB: jdbc:postgresql://products-db:5432/${NAME_DB}
-      USER_DB: ${USER_DB}
-      PASSWORD_DB: ${PASSWORD_DB}
-      EUREKA_SERVER_URL: http://eureka-server:8761/eureka/
+      URL_DB: jdbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
+      USER_DB: ${PRODUCTS_DB_USER}
+      PASSWORD_DB: ${PRODUCTS_DB_PASSWORD}
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
     networks:
       - eureka-network
-    deploy:
-      replicas: 3
     depends_on:
       - eureka-server
-      - products-db
-    env_file:
-      - .env
+      - ${PRODUCTS_DB_NAME}
 
-  products-db:
-    container_name: products-db
-    image: postgres:15-alpine
+    
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
     environment:
-      POSTGRES_USER: ${USER_DB}
-      POSTGRES_PASSWORD: ${PASSWORD_DB}
-      POSTGRES_DB: ${NAME_DB}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      URL_DB: jdbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
+      USER_DB: ${PAYMENTS_DB_USER}
+      PASSWORD_DB: ${PAYMENTS_DB_PASSWORD}
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+    networks:
+      - eureka-network
+    depends_on:
+      - eureka-server
+      - ${PAYMENTS_DB_NAME}
+
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      URL_DB: jdbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
+      USER_DB: ${ORDERS_DB_USER}
+      PASSWORD_DB: ${ORDERS_DB_PASSWORD}
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+    networks:
+      - eureka-network
+    depends_on:
+      - eureka-server
+      - ${ORDERS_DB_NAME}
+    
+  rabbit-mq:
+    container_name: rabbit-mq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     networks:
       - eureka-network
 
-volumes:
-  postgres_data:
 
+  products-db:
+    container_name: ${PRODUCTS_DB_NAME}
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${PRODUCTS_DB_USER}
+      POSTGRES_PASSWORD: ${PRODUCTS_DB_PASSWORD}
+      POSTGRES_DB: ${PRODUCTS_DB_NAME}
+    networks:
+      - eureka-network
+
+  payments-db:
+    container_name: ${PAYMENTS_DB_NAME}
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${PAYMENTS_DB_USER}
+      POSTGRES_PASSWORD: ${PAYMENTS_DB_PASSWORD}
+      POSTGRES_DB: ${PAYMENTS_DB_NAME}
+    networks:
+      - eureka-network
+  
+  orders-db:
+    container_name: ${ORDERS_DB_NAME}
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${ORDERS_DB_USER}
+      POSTGRES_PASSWORD: ${ORDERS_DB_PASSWORD}
+      POSTGRES_DB: ${ORDERS_DB_NAME}
+    networks:
+      - eureka-network
 
 networks:
   eureka-network:
     driver: bridge
+
