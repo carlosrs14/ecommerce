@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ProductResponseDTO {
-    private String hostname;
-    private Long id;
+    private String id;
     private String name;
     private String description;
     private Double price;

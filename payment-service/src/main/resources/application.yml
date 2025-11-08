@@ -4,3 +4,22 @@ server:
 spring:
   application:
     name: payment-service
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
+
+  r2dbc:
+    url: ${URL_DB}
+    username: ${PAYMENTS_DB_USER}
+    password: ${PAYMENTS_DB_PASS}
+    
+  main:
+    web-application-type: reactive
+  
+  flyway:
+    url: ${FLYWAY_URL}
+    user: ${PAYMENTS_DB_USER}
+    password: ${PAYMENTS_DB_PASS}
+    locations: classpath:db/migration

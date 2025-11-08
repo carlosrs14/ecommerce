@@ -1,16 +1,17 @@
 package com.bloque3.product_service.services;
 
-import java.util.List;
-
 import com.bloque3.product_service.dtos.request.ProductRequestDTO;
 import com.bloque3.product_service.dtos.response.ProductResponseDTO;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 public interface ProductService {
-    ProductResponseDTO findById(Long id);
-    List<ProductResponseDTO> findAll();
-    ProductResponseDTO save(ProductRequestDTO productRequestDTO);
-    ProductResponseDTO update(Long id, ProductRequestDTO productRequestDTO);
-    ProductResponseDTO patch(Long id, ProductRequestDTO productRequestDTO);
-    ProductResponseDTO archive(Long id);
-    void delete(Long id);
+    Mono<ProductResponseDTO> findById(String id);
+    Flux<ProductResponseDTO> findAll();
+    Mono<ProductResponseDTO> save(ProductRequestDTO productRequestDTO);
+    Mono<ProductResponseDTO> update(String id, ProductRequestDTO productRequestDTO);
+    Mono<ProductResponseDTO> patch(String id, ProductRequestDTO productRequestDTO);
+    Mono<ProductResponseDTO> archive(String id);
+    Mono<Void> delete(String id);
 }

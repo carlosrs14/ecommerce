@@ -16,37 +16,44 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
+    container_name: product-service
     ports:
       - "8000:8000"
     environment:
-      URL_DB: jdbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
+      URL_DB: r2dbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
+      FLYWAY_URL: jdbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
       USER_DB: ${PRODUCTS_DB_USER}
-      PASSWORD_DB: ${PRODUCTS_DB_PASSWORD}
+      PASS_DB: ${PRODUCTS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
     networks:
       - eureka-network
     depends_on:
       - eureka-server
       - ${PRODUCTS_DB_NAME}
+    env_file:
+      - ./.env
 
     
   payment-service:
     build:
       context: ./payment-service
       dockerfile: Dockerfile
+    container_name: payment-service
     ports:
       - "8002:8000"
     environment:
-      URL_DB: jdbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
+      URL_DB: r2dbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
+      FLYWAY_URL: jdbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
       USER_DB: ${PAYMENTS_DB_USER}
-      PASSWORD_DB: ${PAYMENTS_DB_PASSWORD}
+      PASS_DB: ${PAYMENTS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
     networks:
       - eureka-network
     depends_on:
       - eureka-server
       - ${PAYMENTS_DB_NAME}
-
+    env_file:
+      - ./.env
 
   order-service:
     build:
@@ -55,60 +62,78 @@ services:
     ports:
       - "8001:8000"
     environment:
-      URL_DB: jdbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
+      URL_DB: r2dbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
+      FLYWAY_URL: jdbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
       USER_DB: ${ORDERS_DB_USER}
-      PASSWORD_DB: ${ORDERS_DB_PASSWORD}
+      PASS_DB: ${ORDERS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
     networks:
       - eureka-network
     depends_on:
       - eureka-server
       - ${ORDERS_DB_NAME}
+    env_file:
+      - ./.env
+
     
   rabbit-mq:
     container_name: rabbit-mq
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
-      - "15672:15672"
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
     networks:
       - eureka-network
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
 
 
   products-db:
     container_name: ${PRODUCTS_DB_NAME}
-    image: postgres:15-alpine
+    image: postgres:15.7-alpine
     environment:
       POSTGRES_USER: ${PRODUCTS_DB_USER}
-      POSTGRES_PASSWORD: ${PRODUCTS_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${PRODUCTS_DB_PASS}
       POSTGRES_DB: ${PRODUCTS_DB_NAME}
     networks:
       - eureka-network
+    volumes:
+      - products-data:/var/lib/postgresql/data
 
   payments-db:
     container_name: ${PAYMENTS_DB_NAME}
-    image: postgres:15-alpine
+    image: postgres:15.7-alpine
     environment:
       POSTGRES_USER: ${PAYMENTS_DB_USER}
-      POSTGRES_PASSWORD: ${PAYMENTS_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${PAYMENTS_DB_PASS}
       POSTGRES_DB: ${PAYMENTS_DB_NAME}
     networks:
       - eureka-network
+    volumes:
+      - payments-data:/var/lib/postgresql/data
   
   orders-db:
     container_name: ${ORDERS_DB_NAME}
-    image: postgres:15-alpine
+    image: postgres:15.7-alpine
     environment:
       POSTGRES_USER: ${ORDERS_DB_USER}
-      POSTGRES_PASSWORD: ${ORDERS_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${ORDERS_DB_PASS}
       POSTGRES_DB: ${ORDERS_DB_NAME}
     networks:
       - eureka-network
+    volumes:
+      - orders-data:/var/lib/postgresql/data
 
 networks:
   eureka-network:
     driver: bridge
 
+volumes:
+  products-data:
+  payments-data:
+  orders-data:
+  rabbitmq-data:
+  

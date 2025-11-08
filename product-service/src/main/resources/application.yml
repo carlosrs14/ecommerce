@@ -5,19 +5,25 @@ spring:
   application:
     name: product-service
 
-  datasource:
-    password: ${PASSWORD_DB}
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
+
+  r2dbc:
     url: ${URL_DB}
-    username: ${USER_DB}
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+    username: ${PRODUCTS_DB_USER}
+    password: ${PRODUCTS_DB_PASS}
+    
+  main:
+    web-application-type: reactive
+    
+  flyway:
+    url: ${FLYWAY_URL}
+    user: ${PRODUCTS_DB_USER}
+    password: ${PRODUCTS_DB_PASS}
+    locations: classpath:db/migration
 
 eureka:
   client:
