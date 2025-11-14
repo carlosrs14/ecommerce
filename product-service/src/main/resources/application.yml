@@ -20,6 +20,8 @@ spring:
     web-application-type: reactive
     
   flyway:
+    enabled: true
+    baseline-on-migrate: true
     url: ${FLYWAY_URL}
     user: ${PRODUCTS_DB_USER}
     password: ${PRODUCTS_DB_PASS}

@@ -9,6 +9,7 @@ import com.bloque3.product_service.models.Product;
 import com.bloque3.product_service.repositories.ProductRespository;
 import com.bloque3.product_service.services.ProductService;
 
+import lombok.NonNull;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<ProductResponseDTO> findById(String id) {
+    public Mono<ProductResponseDTO> findById(@NonNull String id) {
         return productRespository.findById(id).map(productMapper::toDto);
     }
 
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Mono<ProductResponseDTO> save(ProductRequestDTO productRequestDTO) {
         Product product = productMapper.toEntity(productRequestDTO);
+        if (product == null) throw new RuntimeException();
         return productRespository.save(product).map(productMapper::toDto);
     }
 
@@ -58,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<Void> delete(String id) {
+    public Mono<Void> delete(@NonNull String id) {
         return productRespository.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY gen_random_uuid(),
     product_id UUID NOT NULL,
     quantity INT NOT NULL,
