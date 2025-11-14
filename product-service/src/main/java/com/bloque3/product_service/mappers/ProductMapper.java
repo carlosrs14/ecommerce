@@ -9,7 +9,7 @@ import com.bloque3.product_service.models.Product;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    @Mapping(target = "hostname",ignore = true)
+    
     ProductResponseDTO toDto(Product product);
     
     @Mapping(target = "id", ignore = true)

@@ -7,7 +7,8 @@ import com.bloque3.product_service.dtos.request.ProductRequestDTO;
 import com.bloque3.product_service.dtos.response.ProductResponseDTO;
 import com.bloque3.product_service.services.ProductService;
 
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,40 +30,39 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-    
+
     @GetMapping("")
-    public ResponseEntity<List<ProductResponseDTO>> findAll() {
-        return ResponseEntity.ok(productService.findAll());
+    public Flux<ProductResponseDTO> findAll() {
+        return productService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.findById(id));
+    public Mono<ResponseEntity<ProductResponseDTO>> findById(@PathVariable String id) {
+        return productService.findById(id).map(ResponseEntity::ok);
     }
 
     @PostMapping("")
-    public ResponseEntity<ProductResponseDTO> save(@RequestBody @Validated ProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.save(productRequestDTO));
+    public Mono<ResponseEntity<ProductResponseDTO>> save(@RequestBody @Validated ProductRequestDTO productRequestDTO) {
+        return productService.save(productRequestDTO).map(ResponseEntity::ok);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @RequestBody @Validated ProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.update(id, productRequestDTO));
+    public Mono<ResponseEntity<ProductResponseDTO>> update(@PathVariable String id, @RequestBody @Validated ProductRequestDTO productRequestDTO) {
+        return productService.update(id, productRequestDTO).map(ResponseEntity::ok);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> patch(@PathVariable Long id, @RequestBody ProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.patch(id, productRequestDTO));
+    public Mono<ResponseEntity<ProductResponseDTO>> patch(@PathVariable String id, @RequestBody ProductRequestDTO productRequestDTO) {
+        return productService.patch(id, productRequestDTO).map(ResponseEntity::ok);
     }
 
     @PostMapping("/{id}/archive")
-    public ResponseEntity<ProductResponseDTO> archive(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.archive(id));
+    public Mono<ResponseEntity<ProductResponseDTO>> archive(@PathVariable String id) {
+        return productService.archive(id).map(ResponseEntity::ok);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productService.delete(id);
-        return ResponseEntity.noContent().build();
+    public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
+        return productService.delete(id).map(ResponseEntity::ok);
     }
 }
