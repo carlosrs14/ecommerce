@@ -98,4 +98,13 @@ public class ProductServiceImpl implements ProductService {
                     }
                 });
     }
+
+    @Override
+    public Mono<Product> releaseStock(String id, Integer quantity) {
+        return productRespository.findById(id)
+                .flatMap(product -> {
+                    product.setStock(product.getStock() + quantity);
+                    return productRespository.save(product);
+                });
+    }
 }

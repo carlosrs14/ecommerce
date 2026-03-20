@@ -7,6 +7,7 @@ This project is an implementation of a reactive microservices architecture using
 The system follows an Event-Driven Design and utilizes the **Orchestrated/Choreographed Saga** pattern to maintain eventual consistency between services.
 
 ### Main Components:
+- **API Gateway**: Centralized entry point on port 8080.
 - **Eureka Server**: Service discovery.
 - **Order Service**: Orchestrator of purchase orders.
 - **Product Service**: Catalog and inventory management.
@@ -57,14 +58,16 @@ The system follows an Event-Driven Design and utilizes the **Orchestrated/Choreo
    - PostgreSQL (3 instances for each service)
    - Microservices (Order, Product, Payment)
 
-## Main Endpoints
+## Main Endpoints (via API Gateway :8080)
 
-### Order Service (`:8001`)
+All external traffic goes through the API Gateway, which routes to the underlying services.
+
+### Order Service (`/api/v1/orders`)
 - `GET /api/v1/orders`: List all orders.
 - `GET /api/v1/orders/{id}`: Get order details.
 - `POST /api/v1/orders`: Create a new order (Starts the Saga flow).
 
-### Product Service (`:8000`)
+### Product Service (`/api/v1/products`)
 - `GET /api/v1/products`: Product catalog.
 
 ## Saga Flow (Events)

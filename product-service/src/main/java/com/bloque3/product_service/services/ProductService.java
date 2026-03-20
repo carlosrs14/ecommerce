@@ -15,4 +15,5 @@ public interface ProductService {
     Mono<ProductResponseDTO> archive(String id);
     Mono<Void> delete(String id);
     Mono<com.bloque3.product_service.models.Product> reserveStock(String id, Integer quantity);
+    Mono<com.bloque3.product_service.models.Product> releaseStock(String id, Integer quantity);
 }

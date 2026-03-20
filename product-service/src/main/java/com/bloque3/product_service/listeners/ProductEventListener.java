@@ -52,4 +52,22 @@ public class ProductEventListener {
             log.error("Error processing reserve inventory command", e);
         }
     }
+
+    @RabbitListener(queues = "product.payment-events")
+    public void onPaymentFailedEvent(Message message) {
+        try {
+            String json = new String(message.getBody());
+            log.info("Received payment failed event, compensating inventory: {}", json);
+            com.bloque3.product_service.common.messages.PaymentFailedEvent event = objectMapper.readValue(json, com.bloque3.product_service.common.messages.PaymentFailedEvent.class);
+            
+            productService.releaseStock(event.productId(), event.quantity())
+                .subscribe(product -> {
+                    log.info("Successfully released stock for product: {} after payment failed for order: {}", event.productId(), event.orderId());
+                }, error -> {
+                    log.error("Error releasing stock for product: {}", event.productId(), error);
+                });
+        } catch (Exception e) {
+            log.error("Error processing payment failed event", e);
+        }
+    }
 }

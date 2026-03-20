@@ -11,14 +11,42 @@ services:
     networks:
       - eureka-network
 
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+    volumes:
+      - ./config-repo:/app/config-repo
+    networks:
+      - eureka-network
+    depends_on:
+      - eureka-server
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+    networks:
+      - eureka-network
+    depends_on:
+      - eureka-server
+      - config-server
 
   product-service:
     build:
       context: ./product-service
       dockerfile: Dockerfile
     container_name: product-service
-    ports:
-      - "8000:8000"
     environment:
       URL_DB: r2dbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
       FLYWAY_URL: jdbc:postgresql://${PRODUCTS_DB_NAME}:${PRODUCTS_DB_PORT}/${PRODUCTS_DB_NAME}
@@ -29,6 +57,7 @@ services:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${PRODUCTS_DB_NAME}
     env_file:
       - .env
@@ -39,18 +68,18 @@ services:
       context: ./payment-service
       dockerfile: Dockerfile
     container_name: payment-service
-    ports:
-      - "8002:8000"
     environment:
       URL_DB: r2dbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
       FLYWAY_URL: jdbc:postgresql://${PAYMENTS_DB_NAME}:${PAYMENTS_DB_PORT}/${PAYMENTS_DB_NAME}
       USER_DB: ${PAYMENTS_DB_USER}
       PASS_DB: ${PAYMENTS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+      CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${PAYMENTS_DB_NAME}
     env_file:
       - .env
@@ -59,18 +88,18 @@ services:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-    ports:
-      - "8001:8000"
     environment:
       URL_DB: r2dbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
       FLYWAY_URL: jdbc:postgresql://${ORDERS_DB_NAME}:${ORDERS_DB_PORT}/${ORDERS_DB_NAME}
       USER_DB: ${ORDERS_DB_USER}
       PASS_DB: ${ORDERS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+      CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${ORDERS_DB_NAME}
     env_file:
       - .env
