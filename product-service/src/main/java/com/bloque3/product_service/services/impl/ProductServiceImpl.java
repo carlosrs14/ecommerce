@@ -1,86 +1,101 @@
 package com.bloque3.product_service.services.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.bloque3.product_service.dtos.request.ProductRequestDTO;
 import com.bloque3.product_service.dtos.response.ProductResponseDTO;
 import com.bloque3.product_service.mappers.ProductMapper;
 import com.bloque3.product_service.models.Product;
+import com.bloque3.product_service.exceptions.ResourceNotFoundException;
 import com.bloque3.product_service.repositories.ProductRespository;
 import com.bloque3.product_service.services.ProductService;
+
+import lombok.NonNull;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     
     private final ProductMapper productMapper;
-
     private final ProductRespository productRespository;
 
-    private final Environment env;
-
-    public ProductServiceImpl(ProductMapper productMapper, ProductRespository productRespository, Environment env) {
+    public ProductServiceImpl(ProductMapper productMapper, ProductRespository productRespository) {
         this.productMapper = productMapper;
         this.productRespository = productRespository;
-        this.env = env;
     }
 
     @Override
-    public ProductResponseDTO findById(Long id) {
-        Product product = productRespository.findById(id).orElseThrow();
-        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
-        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
-        return productResponseDTO;
+    public Mono<ProductResponseDTO> findById(@NonNull String id) {
+        return productRespository.findById(id).map(productMapper::toDto);
     }
 
     @Override
-    public List<ProductResponseDTO> findAll() {
-        List<Product> products = productRespository.findAll();
-        return products.stream().map(productMapper::toDto).collect(Collectors.toList());
+    public Flux<ProductResponseDTO> findAll() {
+        return productRespository.findAll().map(productMapper::toDto);
     }
 
     @Override
-    public ProductResponseDTO save(ProductRequestDTO productRequestDTO) {
+    public Mono<ProductResponseDTO> save(ProductRequestDTO productRequestDTO) {
         Product product = productMapper.toEntity(productRequestDTO);
-        product = productRespository.save(product);
-        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
-        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
-        return productResponseDTO;
+        if (product == null) throw new RuntimeException();
+        return productRespository.save(product).map(productMapper::toDto);
     }
 
     @Override
-    public ProductResponseDTO update(Long id, ProductRequestDTO productRequestDTO) {
-        Product product = productRespository.findById(id).orElseThrow();
-        product.setName(productRequestDTO.getName());
-        product.setDescription(productRequestDTO.getDescription());
-        product.setPrice(productRequestDTO.getPrice());
-        product.setStock(productRequestDTO.getStock());
-        product = productRespository.save(product);
-
-        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
-        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
-        return productResponseDTO;
+    public Mono<ProductResponseDTO> update(String id, ProductRequestDTO productRequestDTO) {
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    product.setName(productRequestDTO.getName());
+                    product.setDescription(productRequestDTO.getDescription());
+                    product.setPrice(productRequestDTO.getPrice());
+                    product.setStock(productRequestDTO.getStock());
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
     }
 
     @Override
-    public ProductResponseDTO patch(Long id, ProductRequestDTO productRequestDTO) {
-        Product product = productRespository.findById(id).orElseThrow();
-        if (productRequestDTO.getName() != null) {
-            product.setName(productRequestDTO.getName());
-        }
-        product = productRespository.save(product);
-        ProductResponseDTO productResponseDTO = productMapper.toDto(product);
-        productResponseDTO.setHostname(env.getProperty("HOSTNAME"));
-        return productResponseDTO;
+    public Mono<ProductResponseDTO> patch(String id, ProductRequestDTO productRequestDTO) {
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    if (productRequestDTO.getName() != null) product.setName(productRequestDTO.getName());
+                    if (productRequestDTO.getDescription() != null) product.setDescription(productRequestDTO.getDescription());
+                    if (productRequestDTO.getPrice() != null) product.setPrice(productRequestDTO.getPrice());
+                    if (productRequestDTO.getStock() != null) product.setStock(productRequestDTO.getStock());
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
     }
 
     @Override
-    public void delete(Long id) {
-        if (productRespository.existsById(id)) {
-            productRespository.deleteById(id);
-        }
+    public Mono<ProductResponseDTO> archive(String id) {
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    product.setActive(false);
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
+    }
+
+    @Override
+    public Mono<Void> delete(@NonNull String id) {
+        return productRespository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Product> reserveStock(String id, Integer quantity) {
+        return productRespository.findById(id)
+                .flatMap(product -> {
+                    if (product.getStock() >= quantity) {
+                        product.setStock(product.getStock() - quantity);
+                        return productRespository.save(product);
+                    } else {
+                        return Mono.empty(); // Not enough stock
+                    }
+                });
     }
 }
