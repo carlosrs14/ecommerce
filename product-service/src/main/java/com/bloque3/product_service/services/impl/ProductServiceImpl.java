@@ -6,6 +6,7 @@ import com.bloque3.product_service.dtos.request.ProductRequestDTO;
 import com.bloque3.product_service.dtos.response.ProductResponseDTO;
 import com.bloque3.product_service.mappers.ProductMapper;
 import com.bloque3.product_service.models.Product;
+import com.bloque3.product_service.exceptions.ResourceNotFoundException;
 import com.bloque3.product_service.repositories.ProductRespository;
 import com.bloque3.product_service.services.ProductService;
 
@@ -43,24 +44,58 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Mono<ProductResponseDTO> update(String id, ProductRequestDTO productRequestDTO) {
-        // TODO
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    product.setName(productRequestDTO.getName());
+                    product.setDescription(productRequestDTO.getDescription());
+                    product.setPrice(productRequestDTO.getPrice());
+                    product.setStock(productRequestDTO.getStock());
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
     }
 
     @Override
     public Mono<ProductResponseDTO> patch(String id, ProductRequestDTO productRequestDTO) {
-        // TODO
-        throw new UnsupportedOperationException("Not supported yet.");
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    if (productRequestDTO.getName() != null) product.setName(productRequestDTO.getName());
+                    if (productRequestDTO.getDescription() != null) product.setDescription(productRequestDTO.getDescription());
+                    if (productRequestDTO.getPrice() != null) product.setPrice(productRequestDTO.getPrice());
+                    if (productRequestDTO.getStock() != null) product.setStock(productRequestDTO.getStock());
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
     }
 
     @Override
     public Mono<ProductResponseDTO> archive(String id) {
-        // TODO
-        throw new UnsupportedOperationException("Not supported yet.");
+        return productRespository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found with id: " + id)))
+                .flatMap(product -> {
+                    product.setActive(false);
+                    return productRespository.save(product);
+                })
+                .map(productMapper::toDto);
     }
 
     @Override
     public Mono<Void> delete(@NonNull String id) {
         return productRespository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Product> reserveStock(String id, Integer quantity) {
+        return productRespository.findById(id)
+                .flatMap(product -> {
+                    if (product.getStock() >= quantity) {
+                        product.setStock(product.getStock() - quantity);
+                        return productRespository.save(product);
+                    } else {
+                        return Mono.empty(); // Not enough stock
+                    }
+                });
     }
 }

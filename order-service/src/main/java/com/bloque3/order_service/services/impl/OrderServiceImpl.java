@@ -2,8 +2,11 @@ package com.bloque3.order_service.services.impl;
 
 import java.time.Instant;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import com.bloque3.order_service.common.messages.ReserveInventoryCommand;
+import com.bloque3.order_service.config.RabbitConfig;
 import com.bloque3.order_service.dtos.request.OrderRequestDTO;
 import com.bloque3.order_service.dtos.response.OrderResponseDTO;
 import com.bloque3.order_service.mappers.OrderMapper;
@@ -20,10 +23,12 @@ import reactor.core.publisher.Mono;
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final RabbitTemplate rabbitTemplate;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper, RabbitTemplate rabbitTemplate) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -31,7 +36,14 @@ public class OrderServiceImpl implements OrderService{
         Order order = orderMapper.toEntity(request);
         order.setCreatedAt(Instant.now());
         order.setStatus(OrderStatus.CREATED);
-        return orderRepository.save(order).map(orderMapper::toDTO);
+        return orderRepository.save(order).doOnNext(savedOrder -> {
+            ReserveInventoryCommand command = new ReserveInventoryCommand(
+                savedOrder.getId(),
+                savedOrder.getProductId(),
+                savedOrder.getQuantity()
+            );
+            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, "cmd.reserve-inventory", command);
+        }).map(orderMapper::toDTO);
     }
 
     @Override

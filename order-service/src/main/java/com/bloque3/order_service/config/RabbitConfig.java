@@ -4,14 +4,23 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitConfing {
+public class RabbitConfig {
     public static final String EXCHANGE =  "ecommerce-exchange";
     public static final String Q_INVENTORY_EVENTS = "order.inventory-events";
     public static final String Q_PAYMENT_EVENTS = "order.payment-events";
+
+    @Bean
+    MessageConverter jackson2JsonMessageConverter() {
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+        converter.setAssumeSupportedContentType(false); // Do not enforce type ID mapping
+        return converter;
+    }
 
     @Bean
     DirectExchange exchange() {
@@ -39,7 +48,7 @@ public class RabbitConfing {
     }
 
     @Bean
-    Binding paymentEvnetsBinding() {
+    Binding paymentEventsBinding() {
         return BindingBuilder.bind(paymentEventsQueue()).to(exchange()).with("ev.payment-completed");
     }
 
