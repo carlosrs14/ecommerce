@@ -42,6 +42,8 @@ public class PaymentEventListener {
                 rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, "ev.payment-completed", completedEvent);
             }, error -> {
                 log.error("Error saving payment", error);
+                PaymentFailedEvent failedEvent = new PaymentFailedEvent(event.orderId(), event.productId(), event.quantity(), event.totalAmount(), error.getMessage());
+                rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, "ev.payment-failed", failedEvent);
             });
 
         } catch (Exception e) {

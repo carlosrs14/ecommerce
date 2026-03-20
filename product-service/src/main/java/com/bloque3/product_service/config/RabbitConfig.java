@@ -35,4 +35,14 @@ public class RabbitConfig {
     Binding inventoryCommandsBinding() {
         return BindingBuilder.bind(inventoryCommandsQueue()).to(exchange()).with("cmd.reserve-inventory");
     }
+
+    @Bean
+    Queue paymentEventsQueue() {
+        return new Queue("product.payment-events", true);
+    }
+
+    @Bean
+    Binding paymentEventsBinding() {
+        return BindingBuilder.bind(paymentEventsQueue()).to(exchange()).with("ev.payment-failed");
+    }
 }

@@ -24,3 +24,11 @@ spring:
     user: ${ORDERS_DB_USER}
     password: ${ORDERS_DB_PASS}
     locations: classpath:db/migration
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL}
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
