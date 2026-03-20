@@ -11,6 +11,22 @@ services:
     networks:
       - eureka-network
 
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+    volumes:
+      - ./config-repo:/app/config-repo
+    networks:
+      - eureka-network
+    depends_on:
+      - eureka-server
+
   api-gateway:
     build:
       context: ./api-gateway
@@ -24,6 +40,7 @@ services:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
 
   product-service:
     build:
@@ -40,6 +57,7 @@ services:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${PRODUCTS_DB_NAME}
     env_file:
       - .env
@@ -56,10 +74,12 @@ services:
       USER_DB: ${PAYMENTS_DB_USER}
       PASS_DB: ${PAYMENTS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+      CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${PAYMENTS_DB_NAME}
     env_file:
       - .env
@@ -74,10 +94,12 @@ services:
       USER_DB: ${ORDERS_DB_USER}
       PASS_DB: ${ORDERS_DB_PASS}
       EUREKA_SERVER_URL: http://eureka-server:${EUREKA_SERVER_PORT}/eureka/
+      CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - eureka-network
     depends_on:
       - eureka-server
+      - config-server
       - ${ORDERS_DB_NAME}
     env_file:
       - .env

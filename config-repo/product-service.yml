@@ -1,0 +1,36 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: product-service
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
+
+  r2dbc:
+    url: ${URL_DB}
+    username: ${PRODUCTS_DB_USER}
+    password: ${PRODUCTS_DB_PASS}
+    
+  main:
+    web-application-type: reactive
+    
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: ${FLYWAY_URL}
+    user: ${PRODUCTS_DB_USER}
+    password: ${PRODUCTS_DB_PASS}
+    locations: classpath:db/migration
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL}
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
